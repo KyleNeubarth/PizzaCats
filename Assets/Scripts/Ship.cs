@@ -34,17 +34,17 @@ public class Ship : MonoBehaviour
         Vector2 seperation = ComputeSeperation();
         Vector2 mousePull = MousePull();
 
-        rb.velocity +=  mousePullWeight*mousePull + alignmentWeight * alignment + cohesionWeight*cohesion + seperationWeight*seperation;
+        rb.velocity += mousePullWeight * mousePull;
+        float mag = rb.velocity.magnitude;
+        rb.velocity += alignmentWeight * alignment + cohesionWeight*cohesion + seperationWeight*seperation;
         //Debug.Log(alignmentWeight * alignment);
         Vector2 a = rb.velocity;
-        rb.angularVelocity = ((a.x > 0) ? 1:-1)*Vector3.Angle(Vector3.down, a);
-        if (a.magnitude > 2)
-        {
+        //rb.angularVelocity = ((a.x > 0) ? 1:-1)*Vector3.Angle(Vector3.down, a);
+
             a.Normalize();
             rb.velocity = a;
             //Debug.Log("after: " + rb.velocity +" whaaa "+ a.x +", "+ a.y);
-            rb.velocity *= 2f;
-        }
+            rb.velocity *= mag;
         
         //Debug.Log(a +", "+Vector3.Angle(Vector3.right, a));
     }

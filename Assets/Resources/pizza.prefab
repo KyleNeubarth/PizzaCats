@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7044691455417634339}
   - component: {fileID: 178450092646717074}
   - component: {fileID: 1281143768960293301}
-  - component: {fileID: 488965835261485962}
   - component: {fileID: 1947325785423545508}
+  - component: {fileID: 4344695549787839745}
   m_Layer: 0
   m_Name: pizza
   m_TagString: Untagged
@@ -59,6 +59,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -149,22 +150,6 @@ PolygonCollider2D:
       - {x: 0.12, y: -0.97999996}
       - {x: 0.22, y: -0.71999997}
       - {x: 0.29, y: -0.59999996}
---- !u!114 &488965835261485962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8791623061527344987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5573d40af65bbd2448305fc76309b418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shipSpeed: 0.01
-  neighborhood: 3
-  rb: {fileID: 0}
-  ships: {fileID: 0}
 --- !u!50 &1947325785423545508
 Rigidbody2D:
   serializedVersion: 4
@@ -186,3 +171,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4344695549787839745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8791623061527344987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5573d40af65bbd2448305fc76309b418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipSpeed: 0.01
+  neighborhood: 3
+  rb: {fileID: 0}
+  ships: {fileID: 0}
