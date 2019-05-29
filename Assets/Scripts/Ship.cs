@@ -10,28 +10,43 @@ public class Ship : MonoBehaviour
     public GameObject ships;
 
     float alignmentWeight = .1f;
-    float cohesionWeight = 0f;
-    float seperationWeight = 0f;
+    float cohesionWeight = .1f;
+    float seperationWeight = .1f;
+    float mousePullWeight = .3f;
+
+    Camera camera;
+
+    Vector2 vel = Vector2.zero;
 
     public void Start() {
         rb = GetComponent<Rigidbody2D>();
         ships = GameObject.Find("Ships");
+        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         //rb.velocity = new Vector2(shipSpeed,shipSpeed);
     }
 
     public void Update()
     {
+        vel = rb.velocity;
+
         Vector2 alignment = ComputeAlignment();
         Vector2 cohesion = ComputeCohesion();
         Vector2 seperation = ComputeSeperation();
+        Vector2 mousePull = MousePull();
 
-        rb.velocity +=  alignmentWeight*alignment + cohesionWeight*cohesion + seperationWeight*seperation;
-        Debug.Log(alignmentWeight * alignment + cohesionWeight * cohesion + seperationWeight * seperation);
-        //Vector2 a = rb.velocity;
-        //a.Normalize();
-        //rb.velocity = a;
-        //Debug.Log("after: " + rb.velocity +" whaaa "+ a.x +", "+ a.y);
-        //rb.velocity *= shipSpeed;
+        rb.velocity +=  mousePullWeight*mousePull + alignmentWeight * alignment + cohesionWeight*cohesion + seperationWeight*seperation;
+        //Debug.Log(alignmentWeight * alignment);
+        Vector2 a = rb.velocity;
+        rb.angularVelocity = ((a.x > 0) ? 1:-1)*Vector3.Angle(Vector3.down, a);
+        if (a.magnitude > 2)
+        {
+            a.Normalize();
+            rb.velocity = a;
+            //Debug.Log("after: " + rb.velocity +" whaaa "+ a.x +", "+ a.y);
+            rb.velocity *= 2f;
+        }
+        
+        //Debug.Log(a +", "+Vector3.Angle(Vector3.right, a));
     }
     public Vector2 ComputeAlignment()
     {
@@ -46,7 +61,8 @@ public class Ship : MonoBehaviour
             }
 
             if ( Distance(newShip.transform.position,transform.position) < neighborhood ) {
-                p += (Vector2)newShip.GetComponent<Rigidbody2D>().velocity;
+                p += (Vector2)newShip.GetComponent<Ship>().vel;
+                //Debug.Log(p);
                 neighborCount++;
             }
         }
@@ -70,8 +86,8 @@ public class Ship : MonoBehaviour
             {
                 continue;
             }
-
-            if (Distance(newShip.transform.position, transform.position) < neighborhood)
+            float dist = Distance(newShip.transform.position, transform.position);
+            if (dist < neighborhood && dist > 1)
             {
                 p += (Vector2)newShip.transform.position;
                 neighborCount++;
@@ -83,7 +99,7 @@ public class Ship : MonoBehaviour
         p.x /= neighborCount;
         p.y /= neighborCount;
         p -= (Vector2)transform.position;
-        p.Normalize();
+        //p.Normalize();
         return p;
     }
     Vector2 ComputeSeperation()
@@ -111,8 +127,18 @@ public class Ship : MonoBehaviour
             return p;
         p.x /= neighborCount;
         p.y /= neighborCount;
-        p.Normalize();
+        //p.Normalize();
         return p;
+    }
+    Vector2 MousePull()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            return Vector3.Normalize(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+        }
+        else {
+            return Vector2.zero;
+        }
     }
     float Distance(Vector2 a,Vector2 b)
     {
