@@ -16,8 +16,9 @@ public class CatMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        cat.dir = mousePos - (Vector2)cat.transform.position;
+        Vector2 mousePos = Input.mousePosition;
+        cat.dir = mousePos - new Vector2(Screen.width / 2, Screen.height / 2);
+        //cat.dir = mousePos - (Vector2)Camera.main.ScreenToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));
         cat.dir.Normalize();
     }
 }
